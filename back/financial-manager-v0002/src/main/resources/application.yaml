@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: financial-manager-v0002
