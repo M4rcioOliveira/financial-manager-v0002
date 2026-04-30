@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -26,15 +28,17 @@ public class Despesa {
 
     private String descricao;
 
-    private String valor;
+    private BigDecimal valorTotal;
 
-    private String fixa;
+    private BigDecimal valorParcela;
 
-    private String qtdParcelas;
+    private Boolean fixa;
 
-    private String parcelada;
+    private Integer qtdParcelas;
 
-    private LocalDateTime dataVencimento;
+    private Boolean parcelada;
+
+    private LocalDate dataVencimento;
 
     @Enumerated(EnumType.STRING)
     private CategoriaEnum categoria;
