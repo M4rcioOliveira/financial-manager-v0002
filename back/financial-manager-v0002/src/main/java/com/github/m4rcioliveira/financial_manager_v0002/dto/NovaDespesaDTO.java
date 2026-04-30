@@ -1,4 +1,4 @@
-package com.github.m4rcioliveira.financial_manager_v0002.controller.dto;
+package com.github.m4rcioliveira.financial_manager_v0002.dto;
 
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
 
@@ -13,8 +13,6 @@ public record NovaDespesaDTO(
         String descricao,
 
         BigDecimal valorTotal,
-
-        BigDecimal valorParcela,
 
         Boolean fixa,
 
