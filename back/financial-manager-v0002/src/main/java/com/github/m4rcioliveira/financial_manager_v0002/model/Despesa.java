@@ -39,6 +39,8 @@ public class Despesa {
     @Enumerated(EnumType.STRING)
     private CategoriaEnum categoria;
 
+    private Boolean paga;
+
     @ManyToOne
     @JoinColumn(name = "fatura_id")
     private Fatura fatura;
