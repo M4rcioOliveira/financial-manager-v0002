@@ -6,6 +6,7 @@ import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
+import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.DespesaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -85,6 +86,27 @@ public class DespesaService {
         }
 
         return despesasDetalhadas;
+
+    }
+
+    public Fatura gerarFatura(LocalDate inicio, LocalDate fim) {
+
+        List<Despesa> despesas = despesaRepository.findByDataVencimentoGreaterThanEqualAndDataVencimentoLessThan(inicio, fim);
+
+        if (despesas.isEmpty()) {
+            throw new NotFoundException("Despesas não encontradas!!!");
+        }
+
+        Fatura fatura = new Fatura();
+
+        fatura.setDespesas(despesas);
+        fatura.setReferencia(inicio.getDayOfMonth() + String.valueOf(inicio.getMonth()));
+
+        for (Despesa despesa : despesas) {
+            fatura.setValoTotal(fatura.getValoTotal().add(despesa.getValorParcela()));
+        }
+
+        return fatura;
 
     }
 

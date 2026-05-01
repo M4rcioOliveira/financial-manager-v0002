@@ -1,4 +1,4 @@
-package com.github.m4rcioliveira.financial_manager_v0002.model;
+package com.github.m4rcioliveira.financial_manager_v0002.dto;
 
 import lombok.Getter;
 import lombok.Setter;

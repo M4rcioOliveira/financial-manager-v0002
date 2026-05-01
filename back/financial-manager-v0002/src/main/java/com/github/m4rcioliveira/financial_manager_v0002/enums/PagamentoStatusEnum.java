@@ -12,4 +12,9 @@ public enum PagamentoStatusEnum {
         return List.of(PENDENTE, VENCIDO);
     }
 
+    public static List<PagamentoStatusEnum> status() {
+        return List.of(PAGO, PENDENTE, VENCIDO);
+    }
+
+
 }
