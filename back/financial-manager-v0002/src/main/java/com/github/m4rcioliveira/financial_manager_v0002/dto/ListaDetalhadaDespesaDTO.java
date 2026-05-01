@@ -30,8 +30,6 @@ public record ListaDetalhadaDespesaDTO(
 
         Integer qtdParcelas,
 
-        Boolean parcelada,
-
         LocalDate dataVencimento,
 
         LocalDateTime dataPagamento,
@@ -53,7 +51,6 @@ public record ListaDetalhadaDespesaDTO(
                 despesa.getValorParcela(),
                 despesa.getFixa(),
                 despesa.getQtdParcelas(),
-                despesa.getParcelada(),
                 despesa.getDataVencimento(),
                 despesa.getDataPagamento(),
                 despesa.getCategoria(),
