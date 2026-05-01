@@ -41,8 +41,8 @@ public class DespesaService {
             despesa.setIdUnico(idUnico);
             despesa.setStatusPagamento(PagamentoStatusEnum.PENDENTE);
 
-            if (!despesa.getDataVencimento().isEqual(LocalDate.now())) {
-                despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1L));
+            if (i != 0) {
+                despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(i));
             }
 
             despesas.add(despesa);
