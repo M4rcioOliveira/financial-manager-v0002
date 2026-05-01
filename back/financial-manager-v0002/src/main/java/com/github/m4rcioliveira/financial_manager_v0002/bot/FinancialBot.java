@@ -1,15 +1,20 @@
 package com.github.m4rcioliveira.financial_manager_v0002.bot;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+
+import java.io.InputStream;
 
 @Component
 public class FinancialBot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
@@ -52,4 +57,25 @@ public class FinancialBot implements SpringLongPollingBot, LongPollingSingleThre
             }
         }
     }
-}
+
+
+    public void enviarPdfDoResources(Long chatId) {
+
+        try {
+            ClassPathResource resource = new ClassPathResource("pdf/envioteste.pdf");
+            InputStream inputStream = resource.getInputStream();
+
+            SendDocument sendDocument = SendDocument.builder()
+                    .chatId(chatId.toString())
+                    .document(new InputFile(inputStream, "envioteste.pdf"))
+                    .caption("PDF de teste 📄")
+                    .build();
+
+            telegramClient.execute(sendDocument);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+}}
