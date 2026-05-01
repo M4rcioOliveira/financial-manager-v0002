@@ -1,6 +1,7 @@
 package com.github.m4rcioliveira.financial_manager_v0002.model;
 
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
+import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +25,7 @@ public class Despesa {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(unique = true)
     private UUID idUnico;
 
     private String nome;
@@ -41,10 +44,13 @@ public class Despesa {
 
     private LocalDate dataVencimento;
 
+    private LocalDateTime dataPagamento;
+
     @Enumerated(EnumType.STRING)
     private CategoriaEnum categoria;
 
-    private Boolean paga;
+    @Enumerated(EnumType.STRING)
+    private PagamentoStatusEnum statusPagamento;
 
     @ManyToOne
     @JoinColumn(name = "fatura_id")

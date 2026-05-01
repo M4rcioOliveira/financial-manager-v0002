@@ -3,15 +3,18 @@ package com.github.m4rcioliveira.financial_manager_v0002.service;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.NovaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
+import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.DespesaRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +27,8 @@ public class DespesaService {
 
     private final DespesaRepository despesaRepository;
 
+
+    @Transactional
     public void criarNovaDespesa(NovaDespesaDTO novaDespesaDTO) {
 
         List<Despesa> despesas = new ArrayList<>();
@@ -34,6 +39,7 @@ public class DespesaService {
 
             Despesa despesa = novaDespesaDTOToDespesa(novaDespesaDTO);
             despesa.setIdUnico(idUnico);
+            despesa.setStatusPagamento(PagamentoStatusEnum.PENDENTE);
 
             if (!despesa.getDataVencimento().isEqual(LocalDate.now())) {
                 despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1L));
@@ -45,6 +51,25 @@ public class DespesaService {
         despesaRepository.saveAll(despesas);
 
     }
+
+
+    @Transactional
+    public void pagarDespesa(UUID id){
+
+        List<Despesa> despesas = despesaRepository.findAllByIdAndStatusPagamentoIn(id, PagamentoStatusEnum.pagaveis());
+
+        if (despesas.isEmpty()) {
+            throw new NotFoundException("Despesas não encontradas!!!");
+        }
+
+        for(Despesa despesa : despesas) {
+            despesa.setStatusPagamento(PagamentoStatusEnum.PAGO);
+            despesa.setDataPagamento(LocalDateTime.now());
+        }
+
+
+    }
+
 
     public List<ListaDetalhadaDespesaDTO> obterDespesasDetalhadas() {
 

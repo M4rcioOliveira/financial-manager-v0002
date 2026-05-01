@@ -2,10 +2,12 @@ package com.github.m4rcioliveira.financial_manager_v0002.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
+import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -32,9 +34,11 @@ public record ListaDetalhadaDespesaDTO(
 
         LocalDate dataVencimento,
 
+        LocalDateTime dataPagamento,
+
         CategoriaEnum categoria,
 
-        Boolean paga
+        PagamentoStatusEnum statusPagamento
 
 ) {
 
@@ -51,8 +55,9 @@ public record ListaDetalhadaDespesaDTO(
                 despesa.getQtdParcelas(),
                 despesa.getParcelada(),
                 despesa.getDataVencimento(),
+                despesa.getDataPagamento(),
                 despesa.getCategoria(),
-                despesa.getPaga()
+                despesa.getStatusPagamento()
         );
     }
 }
