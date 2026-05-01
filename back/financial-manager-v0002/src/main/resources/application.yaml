@@ -1,22 +1,21 @@
 spring:
   application:
     name: financial-manager-v0002
+
   datasource:
     url: jdbc:postgresql://localhost:5432/financial
     username: admin
     password: senha123
     driver-class-name: org.postgresql.Driver
 
-    jpa:
+  jpa:  # ✅ AGORA SIM (fora de datasource)
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
+        format_sql: true
 
-      show-sql: true
-
-      properties:
-        hibernate:
-          format_sql: true
-
-    sql:
-      init:
-        mode: always
+  sql:
+    init:
+      mode: always

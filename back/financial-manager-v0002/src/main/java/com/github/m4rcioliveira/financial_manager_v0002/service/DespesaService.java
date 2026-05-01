@@ -14,6 +14,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +28,12 @@ public class DespesaService {
 
         List<Despesa> despesas = new ArrayList<>();
 
-        Despesa despesa = novaDespesaDTOToDespesa(novaDespesaDTO);
+        UUID idUnico = UUID.randomUUID();
 
+        for (int i = 0; i < novaDespesaDTO.qtdParcelas(); i++) {
 
-        for (int i = 0; i < despesa.getQtdParcelas(); i++) {
+            Despesa despesa = novaDespesaDTOToDespesa(novaDespesaDTO);
+            despesa.setIdUnico(idUnico);
 
             if (!despesa.getDataVencimento().isEqual(LocalDate.now())) {
                 despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(1L));
@@ -39,7 +42,7 @@ public class DespesaService {
             despesas.add(despesa);
         }
 
-        despesaRepository.saveAllAndFlush(despesas);
+        despesaRepository.saveAll(despesas);
 
     }
 

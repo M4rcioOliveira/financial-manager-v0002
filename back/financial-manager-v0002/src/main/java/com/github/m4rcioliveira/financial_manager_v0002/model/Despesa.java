@@ -23,6 +23,8 @@ public class Despesa {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private UUID idUnico;
+
     private String nome;
 
     private String descricao;
