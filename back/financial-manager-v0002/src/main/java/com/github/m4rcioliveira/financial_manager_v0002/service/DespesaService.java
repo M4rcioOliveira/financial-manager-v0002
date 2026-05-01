@@ -101,6 +101,7 @@ public class DespesaService {
 
         fatura.setDespesas(despesas);
         fatura.setReferencia(inicio.getDayOfMonth() + String.valueOf(inicio.getMonth()));
+        fatura.setValoTotal(BigDecimal.ZERO);
 
         for (Despesa despesa : despesas) {
             fatura.setValoTotal(fatura.getValoTotal().add(despesa.getValorParcela()));
