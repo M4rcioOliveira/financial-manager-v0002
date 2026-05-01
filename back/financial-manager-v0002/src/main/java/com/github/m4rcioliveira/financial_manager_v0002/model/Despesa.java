@@ -40,8 +40,6 @@ public class Despesa {
 
     private Integer qtdParcelas;
 
-    private Boolean parcelada;
-
     private LocalDate dataVencimento;
 
     private LocalDateTime dataPagamento;
