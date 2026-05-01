@@ -19,3 +19,7 @@ spring:
   sql:
     init:
       mode: always
+
+financial:
+  bot:
+    token: ${FINANCIAL_BOT_TOKEN}
