@@ -52,9 +52,4 @@ public class Despesa {
     @Enumerated(EnumType.STRING)
     private PagamentoStatusEnum statusPagamento;
 
-    @ManyToOne
-    @JoinColumn(name = "fatura_id")
-    private Fatura fatura;
-
-
 }
