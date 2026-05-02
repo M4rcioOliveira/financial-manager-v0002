@@ -8,14 +8,11 @@ import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundExcept
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.DespesaRepository;
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
-import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -32,7 +29,7 @@ public class DespesaService {
 
     private final DespesaRepository despesaRepository;
 
-    private final TemplateEngine templateEngine;
+    private final ApplicationEventPublisher publisher;
 
 
     @Transactional
@@ -61,7 +58,7 @@ public class DespesaService {
 
 
     @Transactional
-    public void pagarDespesa(UUID id){
+    public void pagarDespesa(UUID id) {
 
         List<Despesa> despesas = despesaRepository.findAllByIdAndStatusPagamentoIn(id, PagamentoStatusEnum.pagaveis());
 
@@ -69,14 +66,13 @@ public class DespesaService {
             throw new NotFoundException("Despesas não encontradas!!!");
         }
 
-        for(Despesa despesa : despesas) {
+        for (Despesa despesa : despesas) {
             despesa.setStatusPagamento(PagamentoStatusEnum.PAGO);
             despesa.setDataPagamento(LocalDateTime.now());
         }
 
 
     }
-
 
     public List<ListaDetalhadaDespesaDTO> obterDespesasDetalhadas() {
 
@@ -113,29 +109,10 @@ public class DespesaService {
             fatura.setValorTotal(fatura.getValorTotal().add(despesa.getValorParcela()));
         }
 
+        publisher.publishEvent(fatura);
+
         return fatura;
 
-    }
-
-    public byte[] gerarFaturaPdf(Fatura fatura) {
-
-        Context context = new Context();
-        context.setVariable("fatura", fatura);
-
-        String html = templateEngine.process("faturav2", context);
-
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-
-            PdfRendererBuilder builder = new PdfRendererBuilder();
-            builder.withHtmlContent(html, null);
-            builder.toStream(out);
-            builder.run();
-
-            return out.toByteArray();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao gerar PDF", e);
-        }
     }
 
     //Trocar por mapper

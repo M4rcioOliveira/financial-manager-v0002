@@ -7,10 +7,15 @@ import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.interfaces.LongPollingUpdateConsumer;
 import org.telegram.telegrambots.longpolling.starter.SpringLongPollingBot;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 @Component
 @Slf4j
@@ -77,5 +82,23 @@ public class FinancialBot implements SpringLongPollingBot, LongPollingSingleThre
 //            e.printStackTrace();
 //        }
 
+
+    public void enviarPdf(Long chatId, byte[] pdfBytes) {
+
+        try {
+            InputStream inputStream = new ByteArrayInputStream(pdfBytes);
+
+            SendDocument sendDocument = SendDocument.builder()
+                    .chatId(chatId.toString())
+                    .document(new InputFile(inputStream, "fatura.pdf"))
+                    .caption("PDF gerado 📄")
+                    .build();
+
+            telegramClient.execute(sendDocument);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
