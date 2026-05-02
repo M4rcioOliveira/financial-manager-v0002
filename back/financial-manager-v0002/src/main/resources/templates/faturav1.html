@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            color: #333;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .box {
+            border: 1px solid #ddd;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f4f4f4;
+            padding: 8px;
+            text-align: left;
+        }
+
+        td {
+            padding: 6px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pago {
+            color: green;
+            font-weight: bold;
+        }
+
+        .pendente {
+            color: red;
+            font-weight: bold;
+        }
+
+        .total {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="title">Fatura</div>
+    <div th:text="${fatura.referencia}"></div>
+</div>
+
+<div class="box">
+    <strong>Total:</strong>
+    <span th:text="${#numbers.formatDecimal(fatura.valorTotal, 1, 'POINT', 2, 'COMMA')}"></span>
+</div>
+
+<div class="box">
+    <table>
+        <thead>
+        <tr>
+            <th>Descrição</th>
+            <th>Vencimento</th>
+            <th>Valor</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="d : ${fatura.despesas}">
+            <td th:text="${d.nome}"></td>
+
+            <td th:text="${#temporals.format(d.dataVencimento, 'dd/MM/yyyy')}"></td>
+
+            <td th:text="${#numbers.formatDecimal(d.valorTotal, 1, 'POINT', 2, 'COMMA')}"></td>
+
+            <td th:classappend="${d.statusPagamento.name() == 'PAGO'} ? 'pago' : 'pendente'"
+                th:text="${d.statusPagamento}">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="total">
+        Total da fatura:
+        <strong th:text="${#numbers.formatDecimal(fatura.valorTotal, 1, 'POINT', 2, 'COMMA')}"></strong>
+    </div>
+</div>
+
+</body>
+</html>

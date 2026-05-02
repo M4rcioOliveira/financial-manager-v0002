@@ -3,10 +3,13 @@ package com.github.m4rcioliveira.financial_manager_v0002.controller;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.NovaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ResponseBaseDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
 import com.github.m4rcioliveira.financial_manager_v0002.service.DespesaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +61,23 @@ public class DespesaController {
 
         return ResponseEntity.ok(despesaService.gerarFatura(inicio, fim));
 
+    }
+
+    @GetMapping("/fatura/pdf")
+    public ResponseEntity<byte[]> gerar() {
+
+        LocalDate inicio = YearMonth.of(2026, 6).atDay(1);
+        LocalDate fim = inicio.plusMonths(1);
+
+        Fatura fatura = despesaService.gerarFatura(inicio, fim);
+
+
+        byte[] pdf = despesaService.gerarFaturaPdf(fatura);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=fatura.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 
     @GetMapping("/ping")

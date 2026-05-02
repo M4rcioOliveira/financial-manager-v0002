@@ -19,6 +19,6 @@ public class Fatura {
 
     private String referencia;
     private List<Despesa> despesas = new ArrayList<>();
-    private BigDecimal valoTotal;
+    private BigDecimal valorTotal;
 
 }
