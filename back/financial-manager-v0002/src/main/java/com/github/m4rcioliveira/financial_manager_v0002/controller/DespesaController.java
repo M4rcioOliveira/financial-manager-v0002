@@ -63,22 +63,23 @@ public class DespesaController {
 
     }
 
-    @GetMapping("/fatura/pdf")
-    public ResponseEntity<byte[]> gerar() {
-
-        LocalDate inicio = YearMonth.of(2026, 6).atDay(1);
-        LocalDate fim = inicio.plusMonths(1);
-
-        Fatura fatura = despesaService.gerarFatura(inicio, fim);
-
-
-        byte[] pdf = despesaService.gerarFaturaPdf(fatura);
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=fatura.pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdf);
-    }
+    //Pdf devolvido no controller
+//    @GetMapping("/fatura/pdf")
+//    public ResponseEntity<byte[]> gerar() {
+//
+//        LocalDate inicio = YearMonth.of(2026, 6).atDay(1);
+//        LocalDate fim = inicio.plusMonths(1);
+//
+//        Fatura fatura = despesaService.gerarFatura(inicio, fim);
+//
+//
+//        byte[] pdf = despesaService.gerarFaturaPdf(fatura);
+//
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=fatura.pdf")
+//                .contentType(MediaType.APPLICATION_PDF)
+//                .body(pdf);
+//    }
 
     @GetMapping("/ping")
     public String ping() {
