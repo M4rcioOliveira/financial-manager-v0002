@@ -12,6 +12,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
+import org.telegram.telegrambots.meta.api.objects.webapp.WebAppInfo;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
@@ -64,6 +68,33 @@ public class FinancialBot implements SpringLongPollingBot, LongPollingSingleThre
         }
     }
 
+    // 🔥 BOTÃO QUE ABRE O WEB APP
+    private void enviarBotaoFormulario(Long chatId) {
+
+        InlineKeyboardButton botao = InlineKeyboardButton.builder()
+                .text("Abrir formulário 👤")
+                .webApp(new WebAppInfo("https://www.google.com/")) // ⚠️ troca aqui
+                .build();
+
+        InlineKeyboardRow row = new InlineKeyboardRow();
+        row.add(botao);
+
+        InlineKeyboardMarkup markup = InlineKeyboardMarkup.builder()
+                .keyboardRow(row)
+                .build();
+
+        SendMessage message = SendMessage.builder()
+                .chatId(chatId.toString())
+                .text("Clique para preencher seu nome:")
+                .replyMarkup(markup)
+                .build();
+
+        try {
+            telegramClient.execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
 
     //Pega do resources
 //    public void enviarPdfDoResources(Long chatId) {
