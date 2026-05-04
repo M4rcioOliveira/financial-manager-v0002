@@ -1,4 +1,4 @@
-package com.github.m4rcioliveira.financial_manager_v0002.roteirizador;
+package com.github.m4rcioliveira.financial_manager_v0002.constantes;
 
 public class Roteirizador {
 
