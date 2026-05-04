@@ -1,8 +1,8 @@
 package com.github.m4rcioliveira.financial_manager_v0002.roteirizador;
 
-public class Template {
+public class Roteirizador {
 
-    private Template() {
+    private Roteirizador() {
     }
 
     public static final String MENU_INICIAL = """

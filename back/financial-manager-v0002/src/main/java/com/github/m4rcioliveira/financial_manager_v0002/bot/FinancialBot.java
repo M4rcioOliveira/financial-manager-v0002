@@ -1,6 +1,6 @@
 package com.github.m4rcioliveira.financial_manager_v0002.bot;
 
-import com.github.m4rcioliveira.financial_manager_v0002.roteirizador.Template;
+import com.github.m4rcioliveira.financial_manager_v0002.roteirizador.Roteirizador;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -56,7 +56,7 @@ public class FinancialBot implements SpringLongPollingBot, LongPollingSingleThre
 
             SendMessage message = SendMessage.builder()
                     .chatId(chat_id)
-                    .text(Template.MENU_INICIAL)
+                    .text(Roteirizador.MENU_INICIAL)
                     .parseMode("HTML")
                     .build();
 
