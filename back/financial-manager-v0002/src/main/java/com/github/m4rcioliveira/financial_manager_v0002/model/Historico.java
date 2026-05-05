@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,8 @@ import java.util.Map;
 public class Historico {
 
     private Long chatId;
-    private Map<ActionMessageEnum, String> mensangens = new HashMap<>();
-    private List<String> mensagensSoltas;
+    private Map<String, String> mensangens = new HashMap<>();
+    private List<String> handlersExecutados = new ArrayList<>();
+    private String textLast;
 
 }

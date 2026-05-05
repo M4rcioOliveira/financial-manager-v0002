@@ -21,4 +21,10 @@ public class Constantes {
             <i>Responda com o número da opção</i>
             """;
 
+    public static final String OPCAO_INVALIDA = """
+            Opção Inválida ❌
+            """;
+
+    public static final Integer MIN_SIZE = 1;
+    public static final Integer MAX_SIZE_MENU_INICIAL = 5;
 }
