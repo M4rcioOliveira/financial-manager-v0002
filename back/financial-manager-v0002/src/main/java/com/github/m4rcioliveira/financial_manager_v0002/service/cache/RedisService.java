@@ -18,6 +18,10 @@ public class RedisService {
         return redisTemplate.opsForValue().get(key);
     }
 
+    public Object buscar(Long key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
     public void atualizar(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
     }

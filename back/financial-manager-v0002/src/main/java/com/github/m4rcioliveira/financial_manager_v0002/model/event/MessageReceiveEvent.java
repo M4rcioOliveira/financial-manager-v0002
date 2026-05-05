@@ -9,10 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MensagemEvent {
+public class MessageReceiveEvent extends MessageBaseEvent {
 
-    private Long chatId;
-    private String text;
-    private byte[] pdfBytes;
-
+    public MessageReceiveEvent(Long chatId, String text, byte[] pdfBytes) {
+        super(chatId, text, pdfBytes);
+    }
 }
