@@ -49,6 +49,9 @@ public class ReceiveBotListener {
             } else {
                 if (validaSeNumeroEAteMaxSize(text)) {
                     IMessageHandler handler = handlers.get(HandlerEnum.getNameByOption(Integer.parseInt(text)));
+                    historico = new Historico();
+                    historico.setChatId(chatId);
+                    historico.setTextLast(text);
                     handler.execute(historico);
                 } else {
                     publicarMenuInicialDefault(chatId);
