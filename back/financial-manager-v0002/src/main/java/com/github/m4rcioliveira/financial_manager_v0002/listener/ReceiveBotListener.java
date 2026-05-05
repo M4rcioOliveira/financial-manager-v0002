@@ -40,13 +40,12 @@ public class ReceiveBotListener {
             String text = messageReceiveEvent.getText();
             Long chatId = messageReceiveEvent.getChatId();
 
-            historico.setTextLast(text);
-
-            if (ObjectUtils.anyNotNull(historico) || !historico.getHandlersExecutados().isEmpty()) {
-
-                IMessageHandler handler = handlers.get(historico.getHandlersExecutados().getLast());
-                handler.execute(historico);
-
+            if (ObjectUtils.anyNotNull(historico)) {
+                if(!historico.getHandlersExecutados().isEmpty()){
+                    historico.setTextLast(text);
+                    IMessageHandler handler = handlers.get(historico.getHandlersExecutados().getLast());
+                    handler.execute(historico);
+                }
             } else {
                 if (validaSeNumeroEAteMaxSize(text)) {
                     IMessageHandler handler = handlers.get(HandlerEnum.getNameByOption(Integer.parseInt(text)));

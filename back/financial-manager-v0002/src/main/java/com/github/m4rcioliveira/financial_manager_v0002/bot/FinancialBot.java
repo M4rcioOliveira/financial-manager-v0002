@@ -64,7 +64,7 @@ public class FinancialBot implements SpringLongPollingBot, LongPollingSingleThre
     }
 
     public void enviarMensagem(Long chatId, String text, byte[] pdfBytes) {
-        if (ObjectUtils.anyNull(text)) {
+        if (ObjectUtils.anyNotNull(text)) {
             enviarTexto(chatId, text);
         } else {
             enviarPdf(chatId, pdfBytes);
