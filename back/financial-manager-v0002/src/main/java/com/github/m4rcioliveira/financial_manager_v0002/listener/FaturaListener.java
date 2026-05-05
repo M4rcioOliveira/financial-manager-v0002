@@ -1,9 +1,8 @@
 package com.github.m4rcioliveira.financial_manager_v0002.listener;
 
 import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
-import com.github.m4rcioliveira.financial_manager_v0002.model.event.EnviarPDFEvent;
+import com.github.m4rcioliveira.financial_manager_v0002.model.event.MensagemEvent;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -40,7 +39,7 @@ public class FaturaListener {
 
             byte[] bytePdf = out.toByteArray();
 
-            publisher.publishEvent(new EnviarPDFEvent(8014669915L, bytePdf));
+            publisher.publishEvent(new MensagemEvent(8014669915L,null, bytePdf));
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao gerar PDF", e);

@@ -9,9 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EnviarPDFEvent {
+public class MensagemEvent {
 
     private Long chatId;
+    private String text;
     private byte[] pdfBytes;
 
 }
