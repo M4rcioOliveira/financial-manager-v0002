@@ -9,7 +9,7 @@ public class NovaDespesaMessageHandler implements IMessageHandler {
     @Override
     public void execute(Historico historico) {
 
-        hi
+
 
     }
 }
