@@ -1,6 +1,5 @@
 package com.github.m4rcioliveira.financial_manager_v0002.listener;
 
-import com.github.m4rcioliveira.financial_manager_v0002.bot.FinancialBot;
 import com.github.m4rcioliveira.financial_manager_v0002.constantes.Constantes;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.HandlerEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.handler.IMessageHandler;
@@ -23,7 +22,6 @@ import java.util.Map;
 @Slf4j
 public class ReceiveBotListener {
 
-    private final FinancialBot financialBot;
     private final RedisService redisService;
     private final Map<String, IMessageHandler> handlers;
     private final ApplicationEventPublisher publisher;
@@ -41,7 +39,7 @@ public class ReceiveBotListener {
             Long chatId = messageReceiveEvent.getChatId();
 
             if (ObjectUtils.anyNotNull(historico)) {
-                if(!historico.getHandlersExecutados().isEmpty()){
+                if (!historico.getHandlersExecutados().isEmpty()) {
                     historico.setTextLast(text);
                     IMessageHandler handler = handlers.get(historico.getHandlersExecutados().getLast());
                     handler.execute(historico);
