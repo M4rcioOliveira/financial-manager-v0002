@@ -17,7 +17,6 @@ public class Historico {
 
     private Long chatId;
     private Map<String, String> mensagens = new HashMap<>();
-    private List<String> handlersExecutados = new ArrayList<>();
     private String textLast;
 
 }
