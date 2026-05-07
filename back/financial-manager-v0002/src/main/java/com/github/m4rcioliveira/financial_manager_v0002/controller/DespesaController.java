@@ -2,15 +2,12 @@ package com.github.m4rcioliveira.financial_manager_v0002.controller;
 
 import com.github.m4rcioliveira.financial_manager_v0002.constantes.ArquiteturaConstantes;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.NovaDespesaDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ResponseBaseDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
 import com.github.m4rcioliveira.financial_manager_v0002.service.DespesaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +24,9 @@ public class DespesaController {
     private final DespesaService despesaService;
 
     @PostMapping()
-    public ResponseEntity<Void> criarNovaDespesa(@RequestBody NovaDespesaDTO novaDespesaDTO) {
+    public ResponseEntity<Void> criarNovaDespesa(@RequestBody CriarDespesaDTO criarDespesaDTO) {
 
-        despesaService.criarNovaDespesa(novaDespesaDTO);
+        despesaService.criarNovaDespesa(criarDespesaDTO);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

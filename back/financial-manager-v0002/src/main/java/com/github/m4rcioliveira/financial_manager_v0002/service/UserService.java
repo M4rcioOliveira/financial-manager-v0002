@@ -2,7 +2,7 @@ package com.github.m4rcioliveira.financial_manager_v0002.service;
 
 import com.github.m4rcioliveira.financial_manager_v0002.dto.JwtTokenDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.LoginUserDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.NovoUserDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarUserDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Role;
 import com.github.m4rcioliveira.financial_manager_v0002.model.User;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.UserRepository;
@@ -37,12 +37,12 @@ public class UserService {
         return new JwtTokenDTO(jwtTokenService.generateToken(userDetails));
     }
 
-    public void createUser(NovoUserDTO novoUserDTO) {
+    public void createUser(CriarUserDTO criarUserDTO) {
 
         User newUser = User.builder()
-                .email(novoUserDTO.email())
-                .password(securityConfiguration.passwordEncoder().encode(novoUserDTO.password()))
-                .roles(List.of(Role.builder().name(novoUserDTO.role()).build()))
+                .email(criarUserDTO.email())
+                .password(securityConfiguration.passwordEncoder().encode(criarUserDTO.password()))
+                .roles(List.of(Role.builder().name(criarUserDTO.role()).build()))
                 .build();
 
         userRepository.save(newUser);

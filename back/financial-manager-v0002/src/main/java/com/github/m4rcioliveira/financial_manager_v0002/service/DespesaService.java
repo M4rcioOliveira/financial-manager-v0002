@@ -1,7 +1,7 @@
 package com.github.m4rcioliveira.financial_manager_v0002.service;
 
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.NovaDespesaDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
@@ -33,15 +33,15 @@ public class DespesaService {
 
 
     @Transactional
-    public void criarNovaDespesa(NovaDespesaDTO novaDespesaDTO) {
+    public void criarNovaDespesa(CriarDespesaDTO criarDespesaDTO) {
 
         List<Despesa> despesas = new ArrayList<>();
 
         UUID idUnico = UUID.randomUUID();
 
-        for (int i = 0; i < novaDespesaDTO.qtdParcelas(); i++) {
+        for (int i = 0; i < criarDespesaDTO.qtdParcelas(); i++) {
 
-            Despesa despesa = novaDespesaDTOToDespesa(novaDespesaDTO);
+            Despesa despesa = novaDespesaDTOToDespesa(criarDespesaDTO);
             despesa.setIdUnico(idUnico);
             despesa.setStatusPagamento(PagamentoStatusEnum.PENDENTE);
 
@@ -116,17 +116,17 @@ public class DespesaService {
     }
 
     //Trocar por mapper
-    private Despesa novaDespesaDTOToDespesa(NovaDespesaDTO novaDespesaDTO) {
+    private Despesa novaDespesaDTOToDespesa(CriarDespesaDTO criarDespesaDTO) {
         Despesa despesa = new Despesa();
 
-        despesa.setNome(novaDespesaDTO.nome());
-        despesa.setDescricao(novaDespesaDTO.descricao());
-        despesa.setValorTotal(novaDespesaDTO.valorTotal());
-        despesa.setValorParcela(novaDespesaDTO.valorTotal().divide(BigDecimal.valueOf(novaDespesaDTO.qtdParcelas()), 2, RoundingMode.HALF_UP));
-        despesa.setFixa(novaDespesaDTO.fixa());
-        despesa.setQtdParcelas(novaDespesaDTO.qtdParcelas() == 0 ? QTD_PARCELA_DEFAULT : novaDespesaDTO.qtdParcelas());
-        despesa.setDataVencimento(novaDespesaDTO.dataVencimento() == null ? LocalDate.now() : novaDespesaDTO.dataVencimento());
-        despesa.setCategoria(novaDespesaDTO.categoria() == null ? CategoriaEnum.OUTRAS : novaDespesaDTO.categoria());
+        despesa.setNome(criarDespesaDTO.nome());
+        despesa.setDescricao(criarDespesaDTO.descricao());
+        despesa.setValorTotal(criarDespesaDTO.valorTotal());
+        despesa.setValorParcela(criarDespesaDTO.valorTotal().divide(BigDecimal.valueOf(criarDespesaDTO.qtdParcelas()), 2, RoundingMode.HALF_UP));
+        despesa.setFixa(criarDespesaDTO.fixa());
+        despesa.setQtdParcelas(criarDespesaDTO.qtdParcelas() == 0 ? QTD_PARCELA_DEFAULT : criarDespesaDTO.qtdParcelas());
+        despesa.setDataVencimento(criarDespesaDTO.dataVencimento() == null ? LocalDate.now() : criarDespesaDTO.dataVencimento());
+        despesa.setCategoria(criarDespesaDTO.categoria() == null ? CategoriaEnum.OUTRAS : criarDespesaDTO.categoria());
 
         return despesa;
     }

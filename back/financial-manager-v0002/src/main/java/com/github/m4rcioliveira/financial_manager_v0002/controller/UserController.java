@@ -3,7 +3,7 @@ package com.github.m4rcioliveira.financial_manager_v0002.controller;
 import com.github.m4rcioliveira.financial_manager_v0002.constantes.ArquiteturaConstantes;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.JwtTokenDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.LoginUserDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.NovoUserDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarUserDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody NovoUserDTO createUserDto) {
+    public ResponseEntity<Void> createUser(@RequestBody CriarUserDTO createUserDto) {
         userService.createUser(createUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
