@@ -11,21 +11,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/users")
+@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtTokenDTO> authenticateUser(@RequestBody LoginUserDTO loginUserDto) {
-        JwtTokenDTO token = userService.authenticateUser(loginUserDto);
+    public ResponseEntity<JwtTokenDTO> autenticarUser(@RequestBody LoginUserDTO loginUserDto) {
+        JwtTokenDTO token = userService.autenticarUser(loginUserDto);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CriarUserDTO createUserDto) {
-        userService.createUser(createUserDto);
+    public ResponseEntity<Void> criarUser(@RequestBody CriarUserDTO createUserDto) {
+        userService.criarUser(createUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

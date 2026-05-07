@@ -1,8 +1,9 @@
 package com.github.m4rcioliveira.financial_manager_v0002.service;
 
+import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarUserDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.JwtTokenDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.LoginUserDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarUserDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.enums.RoleNameEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Role;
 import com.github.m4rcioliveira.financial_manager_v0002.model.User;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.UserRepository;
@@ -26,7 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final SecurityConfiguration securityConfiguration;
 
-    public JwtTokenDTO authenticateUser(LoginUserDTO loginUserDTO) {
+    public JwtTokenDTO autenticarUser(LoginUserDTO loginUserDTO) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUserDTO.email(), loginUserDTO.password());
 
@@ -37,15 +38,23 @@ public class UserService {
         return new JwtTokenDTO(jwtTokenService.generateToken(userDetails));
     }
 
-    public void createUser(CriarUserDTO criarUserDTO) {
+    public void criarUser(CriarUserDTO criarUserDTO) {
 
         User newUser = User.builder()
                 .email(criarUserDTO.email())
                 .password(securityConfiguration.passwordEncoder().encode(criarUserDTO.password()))
-                .roles(List.of(Role.builder().name(criarUserDTO.role()).build()))
+                .roles(mapperRoles(criarUserDTO.roles()))
                 .build();
 
         userRepository.save(newUser);
+    }
+
+    public List<Role> mapperRoles(List<RoleNameEnum> rolesDTO) {
+        return rolesDTO.stream()
+                .map(roleName -> Role.builder()
+                        .name(roleName)
+                        .build())
+                .toList();
     }
 
 }
