@@ -28,3 +28,7 @@ spring:
 financial:
   bot:
     token: ${FINANCIAL_BOT_TOKEN}
+  security:
+    jwt:
+      token: ${FINANCIAL_JWT_TOKEN}
+      issuer: financial-manager
