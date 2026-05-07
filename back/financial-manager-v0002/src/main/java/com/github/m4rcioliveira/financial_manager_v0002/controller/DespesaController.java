@@ -1,5 +1,6 @@
 package com.github.m4rcioliveira.financial_manager_v0002.controller;
 
+import com.github.m4rcioliveira.financial_manager_v0002.constantes.ArquiteturaConstantes;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.NovaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ResponseBaseDTO;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/despesas")
+@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/despesas")
 @RequiredArgsConstructor
 public class DespesaController {
 

@@ -1,5 +1,6 @@
 package com.github.m4rcioliveira.financial_manager_v0002.controller;
 
+import com.github.m4rcioliveira.financial_manager_v0002.constantes.ArquiteturaConstantes;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.JwtTokenDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.LoginUserDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.NovoUserDTO;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -27,21 +28,4 @@ public class UserController {
         userService.createUser(createUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> getAuthenticationTest() {
-        return new ResponseEntity<>("Autenticado com sucesso", HttpStatus.OK);
-    }
-
-    @GetMapping("/test/customer")
-    public ResponseEntity<String> getCustomerAuthenticationTest() {
-        return new ResponseEntity<>("Cliente autenticado com sucesso", HttpStatus.OK);
-    }
-
-    @GetMapping("/test/administrator")
-    public ResponseEntity<String> getAdminAuthenticationTest() {
-        return new ResponseEntity<>("Administrador autenticado com sucesso", HttpStatus.OK);
-    }
-
-
 }
