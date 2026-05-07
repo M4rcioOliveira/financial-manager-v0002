@@ -4,7 +4,6 @@ import com.github.m4rcioliveira.financial_manager_v0002.constantes.ArquiteturaCo
 import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
 import com.github.m4rcioliveira.financial_manager_v0002.model.User;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.UserRepository;
-import com.github.m4rcioliveira.financial_manager_v0002.security.config.SecurityConfiguration;
 import com.github.m4rcioliveira.financial_manager_v0002.security.details.UserDetailsImpl;
 import com.github.m4rcioliveira.financial_manager_v0002.security.service.JwtTokenService;
 import jakarta.servlet.FilterChain;
@@ -12,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,15 +25,16 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenService jwtTokenService;
 
     private final UserRepository userRepository;
 
-    public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/user",
-            ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/user/login"
+    private static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
+            ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + ArquiteturaConstantes.PATH_USER,
+            ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + ArquiteturaConstantes.PATH_USER + "/login"
     };
 
     @Override
@@ -73,6 +74,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     // Verifica se o endpoint requer autenticação antes de processar a requisição
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
+        log.info("RequestURI que chegou {}", requestURI);
         return !Arrays.asList(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).contains(requestURI);
     }
 
