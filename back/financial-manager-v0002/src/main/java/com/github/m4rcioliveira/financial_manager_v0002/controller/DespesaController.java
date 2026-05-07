@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/despesas")
+@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/despesa")
 @RequiredArgsConstructor
 public class DespesaController {
 
