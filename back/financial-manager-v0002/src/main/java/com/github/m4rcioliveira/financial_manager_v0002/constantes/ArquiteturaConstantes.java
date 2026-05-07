@@ -8,5 +8,6 @@ public class ArquiteturaConstantes {
     public static final String VERSAO_API = "v1";
     public static final String NOME_APLICACAO = "financial-manager";
     public static final String BASE_PATH_REQUEST_MAPPING = "/api/" + VERSAO_API + "/" + NOME_APLICACAO;
+    public static final String PATH_USER = "/user";
 
 }

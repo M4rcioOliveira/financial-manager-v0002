@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + "/user")
+@RequestMapping(ArquiteturaConstantes.BASE_PATH_REQUEST_MAPPING + ArquiteturaConstantes.PATH_USER)
 @RequiredArgsConstructor
 public class UserController {
 
@@ -24,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> criarUser(@RequestBody CriarUserDTO createUserDto) {
-        userService.criarUser(createUserDto);
+    public ResponseEntity<Void> criarUser(@RequestBody CriarUserDTO criarUserDTO) {
+        userService.criarUser(criarUserDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
