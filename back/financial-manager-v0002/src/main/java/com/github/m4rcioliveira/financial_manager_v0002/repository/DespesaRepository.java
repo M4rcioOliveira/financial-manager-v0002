@@ -13,15 +13,18 @@ import java.util.UUID;
 public interface DespesaRepository extends JpaRepository<Despesa, UUID> {
 
     //Pagamento Unico
-    List<Despesa> findAllByIdAndStatusPagamentoIn(
+    List<Despesa> findAllByIdAndUserIdAndStatusPagamentoIn(
             UUID id,
+            UUID userId,
             List<PagamentoStatusEnum> status
     );
 
-
-    List<Despesa> findByDataVencimentoGreaterThanEqualAndDataVencimentoLessThan(
+    List<Despesa> findAllByUserIdAndDataVencimentoGreaterThanEqualAndDataVencimentoLessThan(
+            UUID userId,
             LocalDate inicio,
             LocalDate fim
     );
+
+    List<Despesa> findAllByUserId(UUID id);
 
 }

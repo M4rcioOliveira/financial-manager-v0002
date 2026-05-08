@@ -10,7 +10,7 @@ public class AutenticacaoUtil {
     private AutenticacaoUtil() {
     }
 
-    public static UserDetailsImpl getAuthenticatedUser() {
+    private static UserDetailsImpl getAuthenticatedUser() {
 
         Object principal = SecurityContextHolder
                 .getContext()

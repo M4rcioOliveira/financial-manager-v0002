@@ -4,6 +4,7 @@ import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarUserDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.JwtTokenDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.LoginUserDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.RoleNameEnum;
+import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Role;
 import com.github.m4rcioliveira.financial_manager_v0002.model.User;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.UserRepository;
@@ -16,7 +17,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +58,10 @@ public class UserService {
                         .name(roleName)
                         .build())
                 .toList();
+    }
+
+    public User buscarUserPorId(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(MessageFormat.format("Usuario {0} não encontrado", id)));
     }
 
 }

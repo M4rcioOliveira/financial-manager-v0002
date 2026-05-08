@@ -1,12 +1,13 @@
 package com.github.m4rcioliveira.financial_manager_v0002.service;
 
-import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarDespesaDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
+import com.github.m4rcioliveira.financial_manager_v0002.model.User;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.DespesaRepository;
 import com.github.m4rcioliveira.financial_manager_v0002.security.util.AutenticacaoUtil;
 import jakarta.transaction.Transactional;
@@ -34,6 +35,8 @@ public class DespesaService {
 
     private final ApplicationEventPublisher publisher;
 
+    private final UserService userService;
+
 
     @Transactional
     public void criarNovaDespesa(CriarDespesaDTO criarDespesaDTO) {
@@ -42,11 +45,14 @@ public class DespesaService {
 
         UUID idUnico = UUID.randomUUID();
 
+        User user = userService.buscarUserPorId(AutenticacaoUtil.getAuthenticatedUserId());
+
         for (int i = 0; i < criarDespesaDTO.qtdParcelas(); i++) {
 
             Despesa despesa = novaDespesaDTOToDespesa(criarDespesaDTO);
             despesa.setIdUnico(idUnico);
             despesa.setStatusPagamento(PagamentoStatusEnum.PENDENTE);
+            despesa.setUser(user);
 
             if (i != 0) {
                 despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(i));
@@ -55,7 +61,6 @@ public class DespesaService {
             despesas.add(despesa);
         }
 
-        log.info("UUID do usuário: {}", AutenticacaoUtil.getAuthenticatedUserId());
 
         despesaRepository.saveAll(despesas);
 
@@ -65,7 +70,7 @@ public class DespesaService {
     @Transactional
     public void pagarDespesa(UUID id) {
 
-        List<Despesa> despesas = despesaRepository.findAllByIdAndStatusPagamentoIn(id, PagamentoStatusEnum.pagaveis());
+        List<Despesa> despesas = despesaRepository.findAllByIdAndUserIdAndStatusPagamentoIn(id, AutenticacaoUtil.getAuthenticatedUserId(), PagamentoStatusEnum.pagaveis());
 
         if (despesas.isEmpty()) {
             throw new NotFoundException("Despesas não encontradas!!!");
@@ -81,7 +86,7 @@ public class DespesaService {
 
     public List<ListaDetalhadaDespesaDTO> obterDespesasDetalhadas() {
 
-        List<Despesa> despesas = despesaRepository.findAll();
+        List<Despesa> despesas = despesaRepository.findAllByUserId(AutenticacaoUtil.getAuthenticatedUserId());
         List<ListaDetalhadaDespesaDTO> despesasDetalhadas = new ArrayList<>();
 
         if (despesas.isEmpty()) {
@@ -98,7 +103,7 @@ public class DespesaService {
 
     public Fatura gerarFatura(LocalDate inicio, LocalDate fim) {
 
-        List<Despesa> despesas = despesaRepository.findByDataVencimentoGreaterThanEqualAndDataVencimentoLessThan(inicio, fim);
+        List<Despesa> despesas = despesaRepository.findAllByUserIdAndDataVencimentoGreaterThanEqualAndDataVencimentoLessThan(AutenticacaoUtil.getAuthenticatedUserId(), inicio, fim);
 
         if (despesas.isEmpty()) {
             throw new NotFoundException("Despesas não encontradas!!!");

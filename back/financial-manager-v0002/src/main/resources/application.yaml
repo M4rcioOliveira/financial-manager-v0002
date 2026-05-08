@@ -15,7 +15,7 @@ spring:
 
   jpa:  # ✅ AGORA SIM (fora de datasource)
     hibernate:
-      ddl-auto: update #create se for mexer nas tabelas
+      ddl-auto: create #create se for mexer nas tabelas
     show-sql: true
     properties:
       hibernate:
