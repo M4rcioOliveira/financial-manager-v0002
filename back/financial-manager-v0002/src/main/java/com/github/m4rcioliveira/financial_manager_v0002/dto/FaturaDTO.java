@@ -17,7 +17,7 @@ import java.util.List;
 public class FaturaDTO {
 
     private String referencia;
-    private List<Despesa> despesas = new ArrayList<>();
+    private List<DespesaDTO> despesas = new ArrayList<>();
     private BigDecimal valorTotal;
 
 }

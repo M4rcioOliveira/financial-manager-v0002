@@ -115,7 +115,13 @@ public class DespesaService {
 
         FaturaDTO faturaDTO = new FaturaDTO();
 
-        faturaDTO.setDespesas(despesas);
+        List<DespesaDTO> despesasDTO = new ArrayList<>();
+
+        for(Despesa despesa : despesas){
+            despesasDTO.add(DespesaDTO.from(despesa));
+        }
+
+        faturaDTO.setDespesas(despesasDTO);
         faturaDTO.setReferencia(inicio.getDayOfMonth() + String.valueOf(inicio.getMonth()));
         faturaDTO.setValorTotal(BigDecimal.ZERO);
 
@@ -129,7 +135,7 @@ public class DespesaService {
 
     }
 
-    //Trocar por mapper
+
     private Despesa novaDespesaDTOToDespesa(CriarDespesaDTO criarDespesaDTO) {
         Despesa despesa = new Despesa();
 
