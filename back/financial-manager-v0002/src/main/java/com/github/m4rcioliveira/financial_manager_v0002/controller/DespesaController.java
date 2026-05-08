@@ -1,10 +1,10 @@
 package com.github.m4rcioliveira.financial_manager_v0002.controller;
 
 import com.github.m4rcioliveira.financial_manager_v0002.constantes.ArquiteturaConstantes;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.DespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.ResponseBaseDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.FaturaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.service.DespesaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,9 +32,9 @@ public class DespesaController {
     }
 
     @GetMapping()
-    public ResponseEntity<ResponseBaseDTO<List<ListaDetalhadaDespesaDTO>>> despesasDetalhadas() {
+    public ResponseEntity<ResponseBaseDTO<List<DespesaDTO>>> despesasDetalhadas() {
 
-        ResponseBaseDTO<List<ListaDetalhadaDespesaDTO>> responseBaseDTO = new ResponseBaseDTO<>();
+        ResponseBaseDTO<List<DespesaDTO>> responseBaseDTO = new ResponseBaseDTO<>();
         responseBaseDTO.setData(despesaService.obterDespesasDetalhadas());
 
         return ResponseEntity.ok(responseBaseDTO);
@@ -49,7 +49,7 @@ public class DespesaController {
 
 
     @GetMapping("/fatura")
-    public ResponseEntity<Fatura> buscarPorMes(
+    public ResponseEntity<FaturaDTO> buscarPorMes(
             @RequestParam int ano,
             @RequestParam int mes
     ) {

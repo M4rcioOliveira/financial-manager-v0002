@@ -1,6 +1,6 @@
 package com.github.m4rcioliveira.financial_manager_v0002.listener;
 
-import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.FaturaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.model.event.MessageSendEvent;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ public class FaturaListener {
 
     @Async
     @EventListener
-    public void gerarFaturaPdf(Fatura fatura) {
+    public void gerarFaturaPdf(FaturaDTO faturaDTO) {
 
         Context context = new Context();
-        context.setVariable("fatura", fatura);
+        context.setVariable("fatura", faturaDTO);
 
         String html = templateEngine.process("faturav2", context);
 

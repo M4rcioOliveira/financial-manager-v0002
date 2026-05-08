@@ -1,12 +1,12 @@
 package com.github.m4rcioliveira.financial_manager_v0002.service;
 
 import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarDespesaDTO;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.ListaDetalhadaDespesaDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.DespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
-import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.FaturaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.model.User;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.DespesaRepository;
 import com.github.m4rcioliveira.financial_manager_v0002.security.util.AutenticacaoUtil;
@@ -83,26 +83,26 @@ public class DespesaService {
 
     }
 
-    public List<ListaDetalhadaDespesaDTO> obterDespesasDetalhadas() {
+    public List<DespesaDTO> obterDespesasDetalhadas() {
 
         UUID userId = AutenticacaoUtil.getAuthenticatedUserId();
 
         List<Despesa> despesas = despesaRepository.findAllByUserId(userId);
-        List<ListaDetalhadaDespesaDTO> despesasDetalhadas = new ArrayList<>();
+        List<DespesaDTO> despesasDetalhadas = new ArrayList<>();
 
         if (despesas.isEmpty()) {
             throw new NotFoundException(MessageFormat.format("Despesas não encontradas para o usuário {0}", userId));
         }
 
         for (Despesa despesa : despesas) {
-            despesasDetalhadas.add(ListaDetalhadaDespesaDTO.from(despesa));
+            despesasDetalhadas.add(DespesaDTO.from(despesa));
         }
 
         return despesasDetalhadas;
 
     }
 
-    public Fatura gerarFatura(LocalDate inicio, LocalDate fim) {
+    public FaturaDTO gerarFatura(LocalDate inicio, LocalDate fim) {
 
         UUID userId = AutenticacaoUtil.getAuthenticatedUserId();
 
@@ -113,19 +113,19 @@ public class DespesaService {
                     "Usuário {0} -  Data de Inicio {1} - Data de fim {2}", userId, inicio, fim));
         }
 
-        Fatura fatura = new Fatura();
+        FaturaDTO faturaDTO = new FaturaDTO();
 
-        fatura.setDespesas(despesas);
-        fatura.setReferencia(inicio.getDayOfMonth() + String.valueOf(inicio.getMonth()));
-        fatura.setValorTotal(BigDecimal.ZERO);
+        faturaDTO.setDespesas(despesas);
+        faturaDTO.setReferencia(inicio.getDayOfMonth() + String.valueOf(inicio.getMonth()));
+        faturaDTO.setValorTotal(BigDecimal.ZERO);
 
         for (Despesa despesa : despesas) {
-            fatura.setValorTotal(fatura.getValorTotal().add(despesa.getValorParcela()));
+            faturaDTO.setValorTotal(faturaDTO.getValorTotal().add(despesa.getValorParcela()));
         }
 
-        publisher.publishEvent(fatura);
+        publisher.publishEvent(faturaDTO);
 
-        return fatura;
+        return faturaDTO;
 
     }
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ListaDetalhadaDespesaDTO(
+public record DespesaDTO(
 
         UUID id,
 
@@ -41,8 +41,8 @@ public record ListaDetalhadaDespesaDTO(
 ) {
 
     //Trocar por mapper
-    public static ListaDetalhadaDespesaDTO from(Despesa despesa) {
-        return new ListaDetalhadaDespesaDTO(
+    public static DespesaDTO from(Despesa despesa) {
+        return new DespesaDTO(
                 despesa.getId(),
                 despesa.getIdUnico(),
                 despesa.getNome(),
