@@ -28,7 +28,7 @@ public class FaturaListener {
         Context context = new Context();
         context.setVariable("fatura", faturaDTO);
 
-        String html = templateEngine.process("faturav2", context);
+        String html = templateEngine.process("faturav3", context);
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
