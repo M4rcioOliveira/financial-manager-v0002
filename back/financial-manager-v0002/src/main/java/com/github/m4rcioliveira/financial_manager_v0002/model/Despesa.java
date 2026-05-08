@@ -51,4 +51,6 @@ public class Despesa {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String referencia;
+
 }

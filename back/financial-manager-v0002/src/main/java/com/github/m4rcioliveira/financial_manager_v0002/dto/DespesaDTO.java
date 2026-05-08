@@ -36,7 +36,9 @@ public record DespesaDTO(
 
         CategoriaEnum categoria,
 
-        PagamentoStatusEnum statusPagamento
+        PagamentoStatusEnum statusPagamento,
+
+        String referencia
 
 ) {
 
@@ -54,7 +56,8 @@ public record DespesaDTO(
                 despesa.getDataVencimento(),
                 despesa.getDataPagamento(),
                 despesa.getCategoria(),
-                despesa.getStatusPagamento()
+                despesa.getStatusPagamento(),
+                despesa.getReferencia()
         );
     }
 }

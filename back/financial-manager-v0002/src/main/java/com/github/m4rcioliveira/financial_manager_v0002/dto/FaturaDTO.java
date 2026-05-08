@@ -18,5 +18,7 @@ public class FaturaDTO {
     private String referencia;
     private List<DespesaDTO> despesas = new ArrayList<>();
     private BigDecimal valorTotal;
+    private BigDecimal valorTotalPago;
+    private BigDecimal valorTotalPendente;
 
 }

@@ -21,8 +21,10 @@ import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -58,6 +60,8 @@ public class DespesaService {
             if (i != 0) {
                 despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(i));
             }
+
+            despesa.setReferencia(String.valueOf(i + 1) + despesa.getDataVencimento().getMonthValue());
 
             despesas.add(despesa);
         }
@@ -122,11 +126,20 @@ public class DespesaService {
         }
 
         faturaDTO.setDespesas(despesasDTO);
-        faturaDTO.setReferencia(inicio.getDayOfMonth() + String.valueOf(inicio.getMonth()));
+        String mesPtBr = inicio.getMonth().getDisplayName(TextStyle.SHORT, Locale.of("pt", "BR"));
+        faturaDTO.setReferencia(mesPtBr + inicio.getYear());
         faturaDTO.setValorTotal(BigDecimal.ZERO);
+        faturaDTO.setValorTotalPago(BigDecimal.ZERO);
+        faturaDTO.setValorTotalPendente(BigDecimal.ZERO);
 
         for (Despesa despesa : despesas) {
             faturaDTO.setValorTotal(faturaDTO.getValorTotal().add(despesa.getValorParcela()));
+            if(PagamentoStatusEnum.PAGO.equals(despesa.getStatusPagamento())){
+                faturaDTO.setValorTotalPago(faturaDTO.getValorTotalPago().add(despesa.getValorParcela()));
+            }
+            if(PagamentoStatusEnum.pagaveis().contains(despesa.getStatusPagamento())){
+                faturaDTO.setValorTotalPendente(faturaDTO.getValorTotalPendente().add(despesa.getValorParcela()));
+            }
         }
 
         publisher.publishEvent(faturaDTO);
