@@ -8,8 +8,10 @@ import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundExcept
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Fatura;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.DespesaRepository;
+import com.github.m4rcioliveira.financial_manager_v0002.security.util.AutenticacaoUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DespesaService {
 
     private static final Integer QTD_PARCELA_DEFAULT = 1;
@@ -51,6 +54,8 @@ public class DespesaService {
 
             despesas.add(despesa);
         }
+
+        log.info("UUID do usuário: {}", AutenticacaoUtil.getAuthenticatedUserId());
 
         despesaRepository.saveAll(despesas);
 
