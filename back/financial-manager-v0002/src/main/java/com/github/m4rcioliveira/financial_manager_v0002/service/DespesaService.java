@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,30 +68,30 @@ public class DespesaService {
     }
 
 
+    //Paga uma unica despesa/parcela
     @Transactional
     public void pagarDespesa(UUID id) {
 
-        List<Despesa> despesas = despesaRepository.findAllByIdAndUserIdAndStatusPagamentoIn(id, AutenticacaoUtil.getAuthenticatedUserId(), PagamentoStatusEnum.pagaveis());
+        Despesa despesa = despesaRepository
+                .findByIdAndUserIdAndStatusPagamentoIn(id,
+                        AutenticacaoUtil.getAuthenticatedUserId(),
+                        PagamentoStatusEnum.pagaveis())
+                .orElseThrow(() -> new NotFoundException(MessageFormat.format("Despesa {0} não encontrada", id)));
 
-        if (despesas.isEmpty()) {
-            throw new NotFoundException("Despesas não encontradas!!!");
-        }
-
-        for (Despesa despesa : despesas) {
-            despesa.setStatusPagamento(PagamentoStatusEnum.PAGO);
-            despesa.setDataPagamento(LocalDateTime.now());
-        }
-
+        despesa.setStatusPagamento(PagamentoStatusEnum.PAGO);
+        despesa.setDataPagamento(LocalDateTime.now());
 
     }
 
     public List<ListaDetalhadaDespesaDTO> obterDespesasDetalhadas() {
 
-        List<Despesa> despesas = despesaRepository.findAllByUserId(AutenticacaoUtil.getAuthenticatedUserId());
+        UUID userId = AutenticacaoUtil.getAuthenticatedUserId();
+
+        List<Despesa> despesas = despesaRepository.findAllByUserId(userId);
         List<ListaDetalhadaDespesaDTO> despesasDetalhadas = new ArrayList<>();
 
         if (despesas.isEmpty()) {
-            throw new NotFoundException("Despesas não encontradas!!!");
+            throw new NotFoundException(MessageFormat.format("Despesas não encontradas para o usuário {0}", userId));
         }
 
         for (Despesa despesa : despesas) {
@@ -103,10 +104,13 @@ public class DespesaService {
 
     public Fatura gerarFatura(LocalDate inicio, LocalDate fim) {
 
-        List<Despesa> despesas = despesaRepository.findAllByUserIdAndDataVencimentoGreaterThanEqualAndDataVencimentoLessThan(AutenticacaoUtil.getAuthenticatedUserId(), inicio, fim);
+        UUID userId = AutenticacaoUtil.getAuthenticatedUserId();
+
+        List<Despesa> despesas = despesaRepository.findAllByUserIdAndDataVencimentoGreaterThanEqualAndDataVencimentoLessThan(userId, inicio, fim);
 
         if (despesas.isEmpty()) {
-            throw new NotFoundException("Despesas não encontradas!!!");
+            throw new NotFoundException(MessageFormat.format("Despesas não encontrada para as informações passadas." +
+                    "Usuário {0} -  Data de Inicio {1} - Data de fim {2}", userId, inicio, fim));
         }
 
         Fatura fatura = new Fatura();

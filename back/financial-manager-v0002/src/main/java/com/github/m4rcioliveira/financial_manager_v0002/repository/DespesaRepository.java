@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface DespesaRepository extends JpaRepository<Despesa, UUID> {
 
-    //Pagamento Unico
-    List<Despesa> findAllByIdAndUserIdAndStatusPagamentoIn(
+    Optional<Despesa> findByIdAndUserIdAndStatusPagamentoIn(
             UUID id,
             UUID userId,
             List<PagamentoStatusEnum> status
