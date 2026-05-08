@@ -48,4 +48,8 @@ public class Despesa {
     @Enumerated(EnumType.STRING)
     private PagamentoStatusEnum statusPagamento;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
