@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f4f5f7;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #1f2937;
+            padding: 32px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8A05BE, #6D00A8);
+            color: black;
+            padding: 28px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(138, 5, 190, 0.15);
+            margin-bottom: 24px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: black;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow:
+                    0 4px 10px rgba(0, 0, 0, 0.03),
+                    0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .total {
+            font-size: 42px;
+            font-weight: 700;
+            color: #8A05BE;
+            margin-bottom: 24px;
+        }
+
+        .resumo {
+            display: flex;
+            gap: 16px;
+        }
+
+        .resumo-item {
+            flex: 1;
+            background: #f9fafb;
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .resumo-titulo {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .resumo-valor {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .pago {
+            color: #16a34a;
+        }
+
+        .pendente {
+            color: #dc2626;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9ca3af;
+            padding-bottom: 14px;
+        }
+
+        tbody td {
+            padding: 18px 0;
+            border-bottom: 1px solid #f1f1f1;
+            font-size: 14px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .descricao {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .nome {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .status {
+            width: fit-content;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status.pago {
+            background: rgba(22, 163, 74, 0.12);
+        }
+
+        .status.pendente {
+            background: rgba(220, 38, 38, 0.12);
+        }
+
+        .data {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+
+        .referencia {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .valor {
+            text-align: right;
+            font-weight: 700;
+            color: #111827;
+            white-space: nowrap;
+        }
+
+        @media(max-width: 600px) {
+
+            body {
+                padding: 16px;
+            }
+
+            .resumo {
+                flex-direction: column;
+            }
+
+            .total {
+                font-size: 32px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="title">💳 Fatura</div>
+
+        <div class="subtitle"
+             th:text="${fatura.referencia}">
+        </div>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="card">
+
+        <div class="label">
+            Total da fatura
+        </div>
+
+        <div class="total"
+             th:text="'R$ ' + ${#numbers.formatDecimal(fatura.valorTotal, 1, 'POINT', 2, 'COMMA')}">
+        </div>
+
+        <div class="resumo">
+
+            <div class="resumo-item">
+                <div class="resumo-titulo">
+                    Pago
+                </div>
+
+                <div class="resumo-valor pago"
+                     th:text="'R$ ' + ${#numbers.formatDecimal(fatura.valorTotalPago, 1, 'POINT', 2, 'COMMA')}">
+                </div>
+            </div>
+
+            <div class="resumo-item">
+                <div class="resumo-titulo">
+                    Pendente
+                </div>
+
+                <div class="resumo-valor pendente"
+                     th:text="'R$ ' + ${#numbers.formatDecimal(fatura.valorTotalPendente, 1, 'POINT', 2, 'COMMA')}">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- LISTA -->
+    <div class="card">
+
+        <div class="table-title">
+            Despesas da fatura
+        </div>
+
+        <table>
+
+            <thead>
+            <tr>
+                <th>Despesa</th>
+                <th>Vencimento</th>
+                <th>Parcela</th>
+                <th style="text-align: right;">Valor</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr th:each="d : ${fatura.despesas}">
+
+                <td>
+
+                    <div class="descricao">
+
+                        <div class="nome"
+                             th:text="${d.nome}">
+                        </div>
+
+                        <div class="status"
+                             th:classappend="${d.statusPagamento.name() == 'PAGO'} ? ' pago' : ' pendente'"
+                             th:text="${d.statusPagamento}">
+                        </div>
+
+                    </div>
+
+                </td>
+
+                <td class="data"
+                    th:text="${#temporals.format(d.dataVencimento, 'dd/MM/yyyy')}">
+                </td>
+
+                <td class="referencia"
+                    th:text="${d.referencia}">
+                </td>
+
+                <td class="valor"
+                    th:text="'R$ ' + ${#numbers.formatDecimal(d.valorParcela, 1, 'POINT', 2, 'COMMA')}">
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

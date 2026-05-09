@@ -61,7 +61,7 @@ public class DespesaService {
                 despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(i));
             }
 
-            despesa.setReferencia(String.valueOf(i + 1) + despesa.getDataVencimento().getMonthValue());
+            despesa.setReferencia(String.valueOf(i + 1) + "/" + despesa.getQtdParcelas());
 
             despesas.add(despesa);
         }
