@@ -49,7 +49,7 @@ public class DespesaController {
 
 
     @GetMapping("/fatura")
-    public ResponseEntity<FaturaDTO> buscarPorMes(
+    public ResponseEntity<FaturaDTO> gerarFatura(
             @RequestParam int ano,
             @RequestParam int mes
     ) {
