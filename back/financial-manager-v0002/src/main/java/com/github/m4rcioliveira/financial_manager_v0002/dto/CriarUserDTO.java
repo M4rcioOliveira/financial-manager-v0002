@@ -8,6 +8,7 @@ public record CriarUserDTO(
 
         String email,
         String password,
+        String telegramId,
         List<RoleNameEnum> roles
 
 ) {

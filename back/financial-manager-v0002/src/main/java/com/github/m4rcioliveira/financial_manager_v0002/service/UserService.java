@@ -46,6 +46,7 @@ public class UserService {
         User newUser = User.builder()
                 .email(criarUserDTO.email())
                 .password(securityConfiguration.passwordEncoder().encode(criarUserDTO.password()))
+                .telegramId(criarUserDTO.telegramId())
                 .roles(mapperRoles(criarUserDTO.roles()))
                 .build();
 
