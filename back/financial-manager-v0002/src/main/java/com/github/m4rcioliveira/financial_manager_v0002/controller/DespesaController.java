@@ -24,9 +24,9 @@ public class DespesaController {
     private final DespesaService despesaService;
 
     @PostMapping()
-    public ResponseEntity<Void> criarNovaDespesa(@RequestBody CriarDespesaDTO criarDespesaDTO) {
+    public ResponseEntity<Void> criarNovaDespesa(@RequestBody List<CriarDespesaDTO> despesasDTO) {
 
-        despesaService.criarNovaDespesa(criarDespesaDTO);
+        despesaService.criarNovaDespesa(despesasDTO);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

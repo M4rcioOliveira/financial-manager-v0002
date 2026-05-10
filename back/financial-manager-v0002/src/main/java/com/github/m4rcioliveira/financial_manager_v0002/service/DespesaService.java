@@ -2,11 +2,11 @@ package com.github.m4rcioliveira.financial_manager_v0002.service;
 
 import com.github.m4rcioliveira.financial_manager_v0002.dto.CriarDespesaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.dto.DespesaDTO;
+import com.github.m4rcioliveira.financial_manager_v0002.dto.FaturaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.CategoriaEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.enums.PagamentoStatusEnum;
 import com.github.m4rcioliveira.financial_manager_v0002.exception.NotFoundException;
 import com.github.m4rcioliveira.financial_manager_v0002.model.Despesa;
-import com.github.m4rcioliveira.financial_manager_v0002.dto.FaturaDTO;
 import com.github.m4rcioliveira.financial_manager_v0002.model.User;
 import com.github.m4rcioliveira.financial_manager_v0002.repository.DespesaRepository;
 import com.github.m4rcioliveira.financial_manager_v0002.security.util.AutenticacaoUtil;
@@ -42,7 +42,7 @@ public class DespesaService {
 
 
     @Transactional
-    public void criarNovaDespesa(CriarDespesaDTO criarDespesaDTO) {
+    public void criarNovaDespesa(List<CriarDespesaDTO> despesasDTO) {
 
         List<Despesa> despesas = new ArrayList<>();
 
@@ -50,22 +50,24 @@ public class DespesaService {
 
         User user = userService.buscarUserPorId(AutenticacaoUtil.getAuthenticatedUserId());
 
-        for (int i = 0; i < criarDespesaDTO.qtdParcelas(); i++) {
+        for (CriarDespesaDTO despesaDTO : despesasDTO) {
 
-            Despesa despesa = novaDespesaDTOToDespesa(criarDespesaDTO);
-            despesa.setIdUnico(idUnico);
-            despesa.setStatusPagamento(PagamentoStatusEnum.PENDENTE);
-            despesa.setUser(user);
+            for (int i = 0; i < despesaDTO.qtdParcelas(); i++) {
 
-            if (i != 0) {
-                despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(i));
+                Despesa despesa = novaDespesaDTOToDespesa(despesaDTO);
+                despesa.setIdUnico(idUnico);
+                despesa.setStatusPagamento(PagamentoStatusEnum.PENDENTE);
+                despesa.setUser(user);
+
+                if (i != 0) {
+                    despesa.setDataVencimento(despesa.getDataVencimento().plusMonths(i));
+                }
+
+                despesa.setReferencia(i + 1 + "/" + despesa.getQtdParcelas());
+
+                despesas.add(despesa);
             }
-
-            despesa.setReferencia(String.valueOf(i + 1) + "/" + despesa.getQtdParcelas());
-
-            despesas.add(despesa);
         }
-
 
         despesaRepository.saveAll(despesas);
 
