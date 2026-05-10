@@ -28,6 +28,9 @@ public class User {
     @Column(unique = true)
     private String telegramId;
 
+    @Column(unique = true)
+    private String telegramChatId;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name="tb_users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
